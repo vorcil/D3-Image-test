@@ -1,0 +1,12 @@
+[
+    { "id": 0,  "x_axis": 100, "y_axis": 100, "height": 100, "width": 100,  "image":"images/sq8.jpeg", "empty": "false"},
+    { "id": 1,  "x_axis": 200, "y_axis": 100, "height": 100, "width": 100,  "image":"images/sq7.jpeg", "empty": "false"},
+    { "id": 2,  "x_axis": 300, "y_axis": 100, "height": 100, "width": 100,  "image":"images/sq5.jpeg", "empty": "false"},
+    { "id": 3,  "x_axis": 100, "y_axis": 200, "height": 100, "width": 100,  "image":"images/sq4.jpeg", "empty": "false"},
+    { "id": 4,  "x_axis": 200, "y_axis": 200, "height": 100, "width": 100,  "image":"images/sq9.jpeg", "empty": "true"},
+    { "id": 5,  "x_axis": 300, "y_axis": 200, "height": 100, "width": 100,  "image":"images/sq6.jpeg", "empty": "false"},
+    { "id": 6,  "x_axis": 100, "y_axis": 300, "height": 100, "width": 100,  "image":"images/sq3.jpeg", "empty": "false"},
+    { "id": 7,  "x_axis": 200, "y_axis": 300, "height": 100, "width": 100,  "image":"images/sq2.jpeg", "empty": "false"},
+    { "id": 8,  "x_axis": 300, "y_axis": 300, "height": 100, "width": 100,  "image":"images/sq1.jpeg", "empty": "false"}
+]
+ 

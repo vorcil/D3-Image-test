@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+  <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+</head>
+<body>
+  <script type="text/javascript">
+      var clicks=0;
+    //Load the data from the images.json file
+    d3.json("images.json", function(data){
+      var jsonImages=data;
+      
+      
+      //Select the body of the html file
+      var bodySelect = d3.select("body");
+      //Append a svg workspace to the body
+      var svg = bodySelect.append("svg")
+	.attr("width", 1100)
+	.attr("height", 1100)
+	.attr("x", 200)
+	.attr("y", 200)
+	.attr("stroke", "gray");
+      
+      //Draw a circle around the smiley image
+      svg.append("circle")
+	.attr("cx", 250)
+	.attr("cy", 250)
+	.attr("r", 250)
+	.attr("fill", "white")
+	.attr("stroke", "gray");
+	
+      //Append all the images to the svg placeholder
+      var images = svg.selectAll("image")
+	.data(jsonImages)
+	.enter()
+	.append("image")
+	
+    //=====================================smiley image=============================================
+    //Set the smiley images by loading data from the json file
+    var imageAttr = images
+    .attr("width",      function(d) { return d.width})
+    .attr("id", 	function(d) { return d.id})
+    .attr("height",     function(d) { return d.height})
+    .attr("x",          function(d) { return d.x_axis})
+    .attr("y",          function(d) { return d.y_axis})
+    .attr("xlink:href", function(d) { return d.image})
+    .on("click", function(d) {
+    clicks=clicks+1;
+    //want to check if at least one of the adjacent squares are empty, if they aren't do nothing
+    var check = 0;
+    if(d.id < 8){ if(jsonImages[d.id+1].empty==="true"){ check=1}};
+    if(d.id < 6){ if(jsonImages[d.id+3].empty==="true"){ check=1}};
+    if(d.id > 0){ if(jsonImages[d.id-1].empty==="true"){ check=1}};
+    if(d.id > 2){ if(jsonImages[d.id-3].empty==="true"){ check=1}};
+    if(check===1){
+      
+    //-------------------------------------------------------------------------------------------
+    //if the clicked square was the empty one do nothing
+    if(d.empty!="true"){
+        
+    //Placeholder variables of position clicked and position to be moved
+    var temp_x, temp_y, empty_x, empty_y, empty_id, temp_id, temp_image, empty_image;
+    temp_x=d.x_axis;
+    temp_y=d.y_axis;
+    temp_id=d.id;
+    temp_image=d.image;
+    
+    //find the position of the empty square
+    for(i=0; i<jsonImages.length; i++){
+		if(jsonImages[i].empty==="true"){
+			empty_x=jsonImages[i].x_axis;
+			empty_y=jsonImages[i].y_axis;
+			empty_image=jsonImages[i].image
+			empty_id=i;
+		}
+    }
+
+    //Switch the two images around
+    jsonImages[temp_id].image=empty_image;
+    jsonImages[temp_id].empty="true";
+    jsonImages[empty_id].image=temp_image;
+    jsonImages[empty_id].empty="false";							    
+    //-------------------------------------------------------------------------------------------					   
+    }
+    //redraw the images after click
+    update();
+      }
+    //end of onclick
+    });
+    //===========================================================================================				
+    //draws a rectangle around the instructions
+     var sq2rect = svg.append("rect")
+	.attr("x", 600)
+	.attr("y", 25)
+	.attr("height", 400)
+	.attr("width", 400)
+	.attr("fill", "white")
+	.attr("stroke", "gray");
+     
+     //Draws the instruction button
+     var instruction_click =0;
+     svg.append("image")
+	.attr("x", 650)
+	.attr("y", 75)
+	.attr("height", 300)
+	.attr("width", 300)
+	.attr("xlink:href", "images/full.jpeg")
+	.on("click", function(d) {
+	//keeps in check if the instructions have been clicked or not
+	if(instruction_click===0){
+	d3.select(this).transition()
+	 .attr("xlink:href", "images/full2.jpeg")
+	 instruction_click=1
+	} else if (instruction_click===1){
+	d3.select(this).transition()
+	 .attr("xlink:href", "images/full.jpeg")
+	 instruction_click=0
+	 }
+	});
+   
+ 
+	//redraws the slider images
+	function update(){
+	  var imageAttr = images
+		  .attr("width",      function(d) { return d.width})
+		  .attr("height",     function(d) { return d.height})
+		  .attr("x",          function(d) { return d.x_axis})
+		  .attr("y",          function(d) { return d.y_axis})
+		  .attr("xlink:href", function(d) { return d.image});	  
+	
+	//checks if each puzzle piece is in the correct position, if all pieces are, displays a finished puzzle image
+	   var clicks=0;
+	  if(jsonImages[0].id===0 & jsonImages[0].image==="images/sq1.jpeg"){clicks+=1;};
+	  if(jsonImages[1].id===1 & jsonImages[1].image==="images/sq2.jpeg"){clicks+=1;};
+	  if(jsonImages[2].id===2 & jsonImages[2].image==="images/sq3.jpeg"){clicks+=1};
+	  if(jsonImages[3].id===3 & jsonImages[3].image==="images/sq4.jpeg"){clicks+=1};
+	  if(jsonImages[4].id===4 & jsonImages[4].image==="images/sq5.jpeg"){clicks+=1};
+	  if(jsonImages[5].id===5 & jsonImages[5].image==="images/sq6.jpeg"){clicks+=1};
+	  if(jsonImages[6].id===6 & jsonImages[6].image==="images/sq7.jpeg"){clicks+=1};
+	  if(jsonImages[7].id===7 & jsonImages[7].image==="images/sq8.jpeg"){clicks+=1};
+	  if(jsonImages[8].id===8 & jsonImages[8].image==="images/sq9.jpeg"){clicks+=1};
+	  console.log("clicks: " + clicks);
+	  if(clicks===9){
+	      var finished = svg.append("image")
+		.attr("x", 70)
+		.attr("y", 60)
+		.attr("height", 365)
+		.attr("width", 365)
+		.attr("xlink:href", "images/full3.jpeg");
+
+	  }
+	}
+    
+      })
+				  
+    
+    </script>
+</body>
+</html
